@@ -19,7 +19,7 @@ class Ship():
         self.rect.midbottom = self.screen_rect.midbottom
 
         # Сохраняем координату корабля
-        self.x = self.rect.x
+        self.x = float(self.rect.x)
 
         # Флаг перемещения корабля вправо
         self.moving_right = False
@@ -28,9 +28,9 @@ class Ship():
 
     def update(self):
 
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
 
         self.rect.x = self.x
