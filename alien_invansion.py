@@ -4,6 +4,7 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvansion:
@@ -22,11 +23,14 @@ class AlienInvansion:
 
         self.ship = Ship(self)
 
+        self.bullets = pygame.sprite.Group()
+
     def run_game(self):
         # Запуск основного цикла игры
         while True:
             self._check_events()
             self.ship.update()
+            self.bullets.update()
             self._update_screen()
 
     def _check_events(self):
@@ -50,6 +54,8 @@ class AlienInvansion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -62,8 +68,16 @@ class AlienInvansion:
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
 
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+
         # Отображение последнего прорисованного экрана
         pygame.display.flip()
+
+    def _fire_bullet(self):
+        # Создание снаряда и включение его в группу Bullets
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
 
 if __name__ == '__main__':
